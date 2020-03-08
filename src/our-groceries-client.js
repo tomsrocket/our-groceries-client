@@ -151,6 +151,31 @@ OurGroceriesClient.prototype.uncrossOff = function( itemId, listId, complete) {
   });
 }
 
+
+OurGroceriesClient.prototype.crossOff = function( itemId, listId, complete) {
+  complete = complete || defaultHandler;
+  var self = this;
+
+  request.post({
+    url:urls.yourLists,
+    headers: {
+      Accept: "application/json, text/javascript, */*",
+      Origin: "https://www.ourgroceries.com",
+      Referer: "https://www.ourgroceries.com/your-list",
+      "X-Requested-With": "XMLHttpRequest",
+      "Host": "www.ourgroceries.com",
+      "Content-Type": "application/json"
+    },
+    json: {command:"setItemCrossedOff", itemId: itemId, listId:listId, crossedOff:true, teamId:self.teamId }
+  }, function(err, response, body) {
+    if (err) {
+      complete({success:false, error:err});
+    } else {
+      complete({success:true, response:body});
+    }
+  });
+}
+
 OurGroceriesClient.prototype.getList = function(listId, complete) {
   complete = complete || defaultHandler;
   var self = this;
